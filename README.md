@@ -1,4 +1,4 @@
-# Diplomatic Actions Properly Convert Devout Interest Groups
+# (Victoria 3 Mod) Diplomatic Actions Properly Convert Devout Interest Groups
 ## Steam Workshop Page
 > https://steamcommunity.com/sharedfiles/filedetails/?id=3639710141
 ## Description
