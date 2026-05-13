@@ -36,9 +36,6 @@
 	}
 
 	accept_effect = {
-
-		root.religion = { save_scope_as = digcf_conversion_target } #This is for the Devout IG Conversion Framework 
-
 		scope:target_country = {
 			capital = {
 				save_temporary_scope_as = colonial_capital_scope
@@ -137,66 +134,193 @@
 				}
 			}
 		}
-		scope:target_country = {
-			ordered_scope_pop = {
-				limit = {
-					is_pop_type = bureaucrats
-				}
-				order_by = total_size
-				position = 0
-				check_range_bounds = no
-				change_pop_culture = {
-					target = scope:main_culture_scope
-					value = 0.05
+		# scope:target_country = { # moved down and modified
+		# 	ordered_scope_pop = {
+		# 		limit = {
+		# 			is_pop_type = bureaucrats
+		# 		}
+		# 		order_by = total_size
+		# 		position = 0
+		# 		check_range_bounds = no
+		# 		change_pop_culture = {
+		# 			target = scope:main_culture_scope
+		# 			value = 0.05
+		# 		}
+		# 	}
+		# 	add_modifier = {
+		# 		name = modifier_changed_administrative_language
+		# 		days = normal_modifier_time
+		# 		is_decaying = yes
+		# 	}
+		# 	capital = {
+		# 		add_modifier = {
+		# 			name = modifier_changed_administrative_language_state
+		# 			days = normal_modifier_time
+		# 			is_decaying = yes
+		# 		}
+		# 	}
+		# }
+
+		scope:target_country = { #the part I added
+			custom_tooltip = {
+				text = dapcdig_replace_bureaucrats_tt
+				every_scope_pop = {
+					limit = { is_pop_type = bureaucrats }
+
+					change_pop_culture = {
+						target = scope:main_culture_scope
+						value = 0.5
+					}
 				}
 			}
+
+			if = {
+				limit = { NOT = { has_law_or_variant = law_type:law_appointed_bureaucrats } }
+				activate_law = law_type:law_appointed_bureaucrats
+			}
+
 			add_modifier = {
 				name = modifier_changed_administrative_language
 				days = normal_modifier_time
 				is_decaying = yes
 			}
-			capital = {
-				add_modifier = {
-					name = modifier_changed_administrative_language_state
-					days = normal_modifier_time
-					is_decaying = yes
-				}
-			}
 		}
 
-		scope:target_country = { #the part I added
+		# c:KOR = {
+		# 	set_country_type = colonial
+		# 	root = {
+		# 		create_diplomatic_pact = {
+		# 			country = prev
+		# 			type = dominion
+		# 		}
+		# 	}
+		# 	activate_law = law_type:law_colonial_administration
+		# }
+	}
+
+	ai = {
+		evaluation_chance = {
+			value = 0.25
+		}
+
+		propose_score = {
+			value = 10
+		}
+
+		will_propose = {
+			"ai_ideological_opinion(scope:target_country)" <= -25
+			OR = {
+				scope:target_country = { liberty_desire < define:NDiplomacy|WAR_GOAL_INFAMY_LOW_LIBERTY_DESIRE_THRESHOLD }
+				has_attitude = {
+					who = scope:target_country
+					attitude = domineering
+				}
+			}
+			OR = {
+				has_strategy = ai_strategy_maintain_power_balance
+				has_strategy = ai_strategy_anti_imperialism
+				has_strategy = ai_strategy_world_revolution
+			}
+		}
+	}
+}
+
+da_change_religion = { #new!
+	groups= { overlord }
+
+	requires_approval = no
+	# should_notify_third_parties = yes
+	show_effect_in_tooltip = yes
+
+	texture = "gfx/interface/icons/diplomatic_action_icons/change_devout.dds"
+	selectable = {
+		has_dlc_feature = subject_and_bloc_actions
+	}
+
+	potential = {
+		scope:target_country = {
+			NOT = { is_diplomatic_play_enemy_of = root }
+		}
+	}
+
+	possible = {
+		is_revolutionary = no
+		scope:target_country = {
+			is_revolutionary = no
+			has_law = law_type:law_colonial_administration
+			NOT = { religion = root.religion }
+		}
+	}
+
+	accept_effect = {
+
+		root.religion = { save_scope_as = digcf_conversion_target } #This is for the Devout IG Conversion Framework 
+
+		scope:target_country = {
+			# The religion changing
+			add_radicals = {
+				value = large_radicals
+				religion = religion
+			}
+
 			if = {
-				limit = { NOT = { religion = root.religion } }
-
-#				ig:ig_devout = {
-#					digcf_convert_devout_interest_group = yes #This is also for the Devout IG Conversion Framework
-#				}
-
+				limit = { root.religion = rel:atheist }
+				if = {
+					limit = { NOT = { has_law_or_variant = law_type:law_state_atheism } }
+					activate_law = law_type:law_state_atheism
+				}
+			}
+			
+			else = {
 				if = {
 					limit = { has_law_or_variant = law_type:law_state_atheism }
 					activate_law = law_type:law_freedom_of_conscience
 				}
 
-				digcf_convert_devout_ig = {
-					target_country = this
-					target_religion = root.religion
+				custom_tooltip = {
+					text = dapcdig_devout_convert_tt
+					digcf_convert_devout_ig = {
+						target_country = this
+						target_religion = root.religion
+					}
 				}
 
 				set_state_religion = root.religion
 				state_religion_switch_effect = yes
+			}
 
+			custom_tooltip = {
+				text = dapcdig_pop_convert_tt
 				every_scope_state = {
 					convert_population = {
 						target = root.religion
 						value = 0.05
 					}
 				}
-				
+			}
+
+			every_scope_character = {
+				if = {
+					limit = {
+						OR = {
+							has_role_of_type = ruler
+							has_role_of_type = heir
+						}
+					}
+					change_character_religion = root.religion
+				}
+				else_if = {
+					limit = {
+						is_interest_group_type = ig_devout
+						NOT = { religion = root.religion }
+					}
+					retire_character = yes
+				}
 			}
 		}
 	}
 
-	ai = {
+	ai = { #AI should use this in conjunction with da_change_culture
 		evaluation_chance = {
 			value = 0.25
 		}
@@ -263,32 +387,94 @@ REPLACE:force_state_religion = { # from 31_power_bloc_force_state_religion in co
 
 	accept_effect = {
 		scope:target_country = {
+			# if = {
+			# 	limit = { has_law_or_variant = law_type:law_state_atheism }
+			# 	activate_law = law_type:law_freedom_of_conscience
+			# }
+
+			# digcf_convert_devout_ig = {
+			# 	target_country = this
+			# 	target_religion = root.religion
+			# }
+
+			# set_state_religion = root.religion
+			# state_religion_switch_effect = yes
+
+			# capital = {
+			# 	convert_population = {
+			# 		target = root.religion
+			# 		value = 0.05
+			# 	}
+			# }
+			# every_scope_state = {
+			# 	limit = { is_capital = no }
+			# 	convert_population = {
+			# 		target = root.religion
+			# 		value = 0.02
+			# 	}
+			# }
+
+			# The religion changing
+			add_radicals = {
+				value = large_radicals
+				religion = religion
+			}
+
 			if = {
-				limit = { has_law_or_variant = law_type:law_state_atheism }
-				activate_law = law_type:law_freedom_of_conscience
-			}
-
-			digcf_convert_devout_ig = {
-				target_country = this
-				target_religion = root.religion
-			}
-
-			set_state_religion = root.religion
-			state_religion_switch_effect = yes
-
-			capital = {
-				convert_population = {
-					target = root.religion
-					value = 0.05
+				limit = { root.religion = rel:atheist }
+				if = {
+					limit = { NOT = { has_law_or_variant = law_type:law_state_atheism } }
+					activate_law = law_type:law_state_atheism
 				}
 			}
-			every_scope_state = {
-				limit = { is_capital = no }
-				convert_population = {
-					target = root.religion
-					value = 0.02
+			
+			else = {
+				if = {
+					limit = { has_law_or_variant = law_type:law_state_atheism }
+					activate_law = law_type:law_freedom_of_conscience
+				}
+
+				custom_tooltip = {
+					text = dapcdig_devout_convert_tt
+					digcf_convert_devout_ig = {
+						target_country = this
+						target_religion = root.religion
+					}
+				}
+
+				set_state_religion = root.religion
+				state_religion_switch_effect = yes
+			}
+
+			custom_tooltip = {
+				text = dapcdig_pop_convert_tt
+				every_scope_state = {
+					convert_population = {
+						target = root.religion
+						value = 0.05
+					}
 				}
 			}
+
+			every_scope_character = {
+				if = {
+					limit = {
+						OR = {
+							has_role_of_type = ruler
+							has_role_of_type = heir
+						}
+					}
+					change_character_religion = root.religion
+				}
+				else_if = {
+					limit = {
+						is_interest_group_type = ig_devout
+						NOT = { religion = root.religion }
+					}
+					retire_character = yes
+				}
+			}
+
 		}
 
 		power_bloc = {

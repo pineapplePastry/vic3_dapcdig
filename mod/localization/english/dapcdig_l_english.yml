@@ -1,0 +1,8 @@
+﻿l_english:
+ # Tooltips
+ dapcdig_pop_convert_tt: "#b 5%#! of non-[ROOT.GetCountry.GetStateReligion.GetNameNoIcon] [Concept('concept_pop','$concept_pops$')] in every [SCOPE.sCountry('target_country').GetAdjective] [concept_state] will convert to [ROOT.GetCountry.GetStateReligion.GetNameNoIcon]"
+ dapcdig_replace_bureaucrats_tt: "#b 50%#! of [SCOPE.sCountry('target_country').GetAdjective] [GetPopType('bureaucrats').GetName] will be replaced by [ROOT.GetCountry.GetAdjectiveNoFlag] appointees"
+ dapcdig_devout_convert_tt: "The [SCOPE.sCountry('target_country').GetAdjective] [SCOPE.sCountry('target_country').GetInterestGroupOfType('ig_devout').GetName] will be replaced by a [ROOT.GetCountry.GetStateReligion.GetNameNoIcon] institution, with the associated [Concept('concept_ideology','$concept_ideologies$')] and [Concept('concept_interest_group_trait','$concept_interest_group_traits$')]"
+ # Diplomatic Actions
+ da_change_religion: "Change Religion of Administration"
+ da_change_religion_desc: "Changes the [concept_state_religion] of a [GetLawType('law_colonial_administration').GetName] [concept_subject] to match that of its [concept_overlord]."
