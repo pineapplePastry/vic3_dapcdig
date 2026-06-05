@@ -186,16 +186,16 @@
 			}
 		}
 
-		# c:KOR = {
-		# 	set_country_type = colonial
-		# 	root = {
-		# 		create_diplomatic_pact = {
-		# 			country = prev
-		# 			type = dominion
-		# 		}
-		# 	}
-		# 	activate_law = law_type:law_colonial_administration
-		# }
+		c:KOR = {
+			set_country_type = colonial
+			root = {
+				create_diplomatic_pact = {
+					country = prev
+					type = dominion
+				}
+			}
+			activate_law = law_type:law_colonial_administration
+		}
 	}
 
 	ai = {
@@ -300,22 +300,27 @@ da_change_religion = { #new!
 			}
 
 			every_scope_character = {
-				if = {
-					limit = {
-						OR = {
-							has_role_of_type = ruler
-							has_role_of_type = heir
-						}
-					}
-					change_character_religion = root.religion
+				# if = {
+				# 	limit = {
+				# 		OR = {
+				# 			has_role_of_type = ruler
+				# 			has_role_of_type = heir
+				# 		}
+				# 	}
+				# 	change_character_religion = root.religion
+				# }
+				# else_if = {
+				# 	limit = {
+				# 		is_interest_group_type = ig_devout
+				# 		NOT = { religion = root.religion }
+				# 	}
+				# 	retire_character = yes
+				# }
+				limit = {
+					is_interest_group_type = ig_devout
+					NOT = { religion = root.religion }
 				}
-				else_if = {
-					limit = {
-						is_interest_group_type = ig_devout
-						NOT = { religion = root.religion }
-					}
-					retire_character = yes
-				}
+				retire_character = yes
 			}
 		}
 	}
