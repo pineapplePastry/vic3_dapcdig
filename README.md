@@ -28,3 +28,5 @@ Using the [Devout Interest Group Conversion Framework](https://steamcommunity.co
 * Same effects as Change Religion of Administration, but activation requirements are unchanged
 ## Credits
 Many thanks to the [Victoria 3 Modding Discord](https://discord.gg/B99A7UBJeD) for their invaluable advice and guidance.
+
+Russian localisation - thank you to **Akiko**!
