@@ -1,0 +1,8 @@
+﻿l_russian:
+ # Подсказки
+ dapcdig_pop_convert_tt: "#b 5%#! не #tooltippable_name #tooltip:[ROOT.GetCountry.GetStateReligion.GetTooltipTag],DATA_RELIGION_NAME_TOOLTIP,ReligionTooltip [ROOT.GetCountry.GetStateReligion.GetCustom('RU_RL_ADJ_GO')|l]#!#! [Concept('concept_pop','населения')] в каждой [SCOPE.sCountry('target_country').GetAdjective|l]ой [Concept('concept_state','области')] будет обращено в [ROOT.GetCountry.GetStateReligion.GetNameNoIcon]"
+ dapcdig_replace_bureaucrats_tt: "#b 50%#! [Concept('concept_pop','группы населения')] «[SCOPE.sCountry('target_country').GetAdjective|l]ие [GetPopType('bureaucrats').GetName|l]» будет заменено [ROOT.GetCountry.GetAdjectiveNoFlag]ими кандидатами"
+ dapcdig_devout_convert_tt: "[SCOPE.sCountry('target_country').GetAdjective]ие [SCOPE.sCountry('target_country').GetInterestGroupOfType('ig_devout').GetName] будут заменены #tooltippable_name #tooltip:[ROOT.GetCountry.GetStateReligion.GetTooltipTag],DATA_RELIGION_NAME_TOOLTIP,ReligionTooltip [ROOT.GetCountry.GetStateReligion.GetCustom('RU_RL_ADJ_IM')|l]#!#! институтом и связаными с ними [Concept('concept_ideology','идеологиями')] и [Concept('concept_interest_group_trait','особенностями')]"
+ # Дипломатическии взаимодействия
+ da_change_religion: "Изменить религию администрации"
+ da_change_religion_desc: "Заменяет [Concept('concept_state_religion','государственную религию')] [Concept('concept_subject','субъекта')] «[GetLawType('law_colonial_administration').GetName]» на ту же, что и у [Concept('concept_overlord','сюзерена')]."
